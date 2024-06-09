@@ -7,8 +7,24 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from dotenv import load_dotenv
 from handlers import commands, buttons
-
+import mysql.connector
+from mysql.connector import Error
 load_dotenv()
+
+db = mysql.connector.connect(
+    host = getenv("host"),
+    user = getenv("user"),
+    passwd = getenv("passwd"),
+    port = getenv("port"),
+    database = getenv("database")
+)
+if db.is_connected():
+    db_Info = db.get_server_info()
+    print("✅Mysql connection -> ", db_Info)
+    cursor = db.cursor()
+    cursor.execute("select database();")
+    record = cursor.fetchone()
+    print("📝Database Name -> ", record)
 
 TOKEN = getenv("TG_TOKEN")
 
