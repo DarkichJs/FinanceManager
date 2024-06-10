@@ -20,16 +20,16 @@ db = mysql.connector.connect(
 )
 if db.is_connected():
     db_Info = db.get_server_info()
-    print("✅Mysql connection -> ", db_Info)
+    print("✅ | Mysql connection -> ", db_Info)
     cursor = db.cursor()
     cursor.execute("select database();")
     record = cursor.fetchone()
-    print("📝Database Name -> ", record)
+    print("📝 | Database Name -> ", record)
 
 TOKEN = getenv("TG_TOKEN")
 
 if not TOKEN:
-    logging.error("No BOT_TOKEN provided. Please set the BOT_TOKEN environment variable.")
+    logging.error("❌ | No BOT_TOKEN provided")
     sys.exit(1)
 
 bot = Bot(token=TOKEN)
@@ -40,8 +40,9 @@ buttons.register_handlers(dp)
 
 async def main() -> None:
     bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    print("✅ | Bot connected")
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    logging.basicConfig(level=logging.ERROR, stream=sys.stdout)
     asyncio.run(main())
